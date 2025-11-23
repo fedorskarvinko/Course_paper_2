@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import Optional, Dict, List
 
 
 class Vacancy:
@@ -6,7 +6,8 @@ class Vacancy:
 
     __slots__ = ("name", "url", "salary_from", "salary_to", "description", "employer")
 
-    def __init__(self, name: str, url: str, salary: Optional[Dict], description: str, employer: str = ""):
+    def __init__(self, name: str, url: str, salary: Optional[Dict], description: str, employer: str = "") -> None:
+        """Инициализация Vacancy"""
 
         self.name = name
         self.url = url
@@ -16,20 +17,32 @@ class Vacancy:
         self.employer = employer
 
     @staticmethod
-    def __validate_salary(self, value: Optional[int]) -> int:
+    def __validate_salary(value: Optional[int]) -> int:
+        """Приватная валидация зарплаты (0, если не указана)"""
+
         return value if isinstance(value, (int, float)) and value > 0 else 0
 
+    # Методы сравнения зарплаты
+
     def __lt__(self, other: "Vacancy") -> bool:
+        """Сравнение 'меньше'"""
+
         return self.salary_from < other.salary_from
 
-    def __le__(self, other) -> bool:
+    def __le__(self, other: "Vacancy") -> bool:
+        """Сравнение 'меньше или равно'"""
+
         return self.salary_from <= other.salary_from
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: "Vacancy") -> bool:
+        """Сравнение 'равенства'"""
+
         return self.salary_from == other.salary_from
 
     def __str__(self) -> str:
-        salary = f"{self.salary_from} - {self.salary_to}" if self.salary_to else str(self.salary_from)
+        """Возвращает строковый объект"""
+
+        salary = f"{self.salary_from}-{self.salary_to}" if self.salary_to else str(self.salary_from)
         salary = salary if salary != "0" else "Не указана"
         return (
             f"{self.name} ({self.employer}) | Зарплата: {salary} | {self.url}\nОписание: {self.description[:100]}..."
@@ -38,6 +51,7 @@ class Vacancy:
     @classmethod
     def cast_to_object_list(cls, data: List[Dict]) -> List["Vacancy"]:
         """Конвертация JSON в список Vacancy"""
+
         return [
             cls(
                 v["name"],

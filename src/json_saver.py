@@ -2,17 +2,20 @@ import json
 import os
 from typing import Any, Dict, List, Optional
 
-from src.abstract_json_saver import AdstractJSONSaver
+from src.abstract_json_saver import AbstractJSONSaver
 
 
-class JSONSaver(AdstractJSONSaver):
+class JSONSaver(AbstractJSONSaver):
     """Класс для работы с json-файлом вакансий"""
 
     def __init__(self, file_name: str = "data/vacancies.json") -> None:
+        """Инициализация JSONSaver"""
+
         self.__file_name = file_name
 
     def __load(self) -> List[Dict]:
         """Загружает данные из json-файла"""
+
         if os.path.exists(self.__file_name):
             with open(self.__file_name, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -33,6 +36,7 @@ class JSONSaver(AdstractJSONSaver):
 
     def add_vacancy(self, vacancy: Dict) -> None:
         """Добавляет вакансию в файл"""
+
         data = self.__load()
         if not any(v["id"] == vacancy["id"] for v in data):
             data.append(vacancy)
@@ -40,6 +44,7 @@ class JSONSaver(AdstractJSONSaver):
 
     def get_vacancies(self, criteria: Optional[Dict[str, Any]] = None) -> List[Dict]:
         """Возвращает вакансии, соответствующие критериям поиска"""
+
         data = self.__load()
         if criteria:
             return [v for v in data if all(v.get(k) == criteria[k] for k in criteria)]
@@ -47,6 +52,7 @@ class JSONSaver(AdstractJSONSaver):
 
     def delete_vacancy(self, vacancy: Dict) -> None:
         """Удаляет вакансию из файла"""
+
         data = self.__load()
-        data = [v for v in data if v["id"]]
+        data = [v for v in data if v["id"] != vacancy["id"]]
         self.__save(data)

@@ -11,6 +11,7 @@ def filter_vacancies(vacancies: List[Vacancy], words: List[str]) -> List[Vacancy
 
 def get_by_salary(vacancies: List[Vacancy], range_str: str) -> List[Vacancy]:
     """Фильтрация по зарплате (формат 'min-max')"""
+
     if not range_str:
         return vacancies
     min_s, max_s = map(int, range_str.split("-"))
@@ -19,16 +20,19 @@ def get_by_salary(vacancies: List[Vacancy], range_str: str) -> List[Vacancy]:
 
 def sort_vacancies(vacancies: List[Vacancy]) -> List[Vacancy]:
     """Сортировка по убыванию зарплаты"""
+
     return sorted(vacancies, reverse=True)
 
 
 def get_top(vacancies: List[Vacancy], n: int) -> List[Vacancy]:
     """Получение топ N вакансий"""
+
     return vacancies[:n]
 
 
 def print_vacancies(vacancies: List[Vacancy]) -> None:
     """Читаемый вывод"""
+
     for v in vacancies:
         print(v)
         print("-" * 80)
